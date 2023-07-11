@@ -20,11 +20,11 @@ from utils.LogHandler import log
 
 log.info("加载apollo配置")
 APOLLO_CONFIG_URL = "config-server-dev.ownit.top"
-client = ApolloClient(app_id="chatgpt-api", cluster="default",
+client = ApolloClient(app_id="chat-review", cluster="default",
                       config_server_url='http://' + APOLLO_CONFIG_URL)
 
-AppKey1 = client.get_value('api-key1')
-AppKey2 = client.get_value('api-key2')
-
+gitlab_server_url = client.get_value('gitlab_server_url')
+gitlab_private_token = client.get_value('gitlab_private_token')
+openai_api_key = client.get_value('openai_api_key')
 if __name__ == '__main__':
-    print(AppKey1)
+    print(gitlab_server_url)

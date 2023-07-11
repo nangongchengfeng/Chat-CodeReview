@@ -10,14 +10,15 @@ import os
 
 from flask import Flask, jsonify, make_response
 
-from app import git
 from app.chat import chat
+from app.git import git
 from utils.LogHandler import log
 
-
 app = Flask(__name__)
-app.register_blueprint(chat, url_prefix='/')
-app.register_blueprint(git, url_prefix='/')
+app.config['debug'] = True
+app.register_blueprint(chat, url_prefix='/chat')
+app.register_blueprint(git, url_prefix='/git')
+
 
 @app.route('/actuator/health', methods=['GET', 'HEAD'])
 def health():
