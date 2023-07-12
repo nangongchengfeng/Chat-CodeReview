@@ -26,5 +26,7 @@ client = ApolloClient(app_id="chat-review", cluster="default",
 gitlab_server_url = client.get_value('gitlab_server_url')
 gitlab_private_token = client.get_value('gitlab_private_token')
 openai_api_key = client.get_value('openai_api_key')
+cookie = client.get_value('Cookie')
+
 if __name__ == '__main__':
     print(gitlab_server_url)

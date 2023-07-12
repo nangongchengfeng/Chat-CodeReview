@@ -41,7 +41,7 @@ class Chat:
     # 调用chatgpt，并计算开销
     def ask(self, prompt):
         self.conversation_list.append({"role": "user", "content": prompt})
-        openai.api_key = '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	'
+        openai.api_key = 'sk-xxxx	'
         response = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=self.conversation_list, temperature=0.5,
                                                 # max_tokens=20,
                                                 top_p=1, )

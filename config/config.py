@@ -5,7 +5,7 @@
 # @File    : config.py.py
 # @Software: PyCharm
 import platform
-from .apollo_config import AppKey1, AppKey2
+
 
 # openai-chatgpt 相关配置
 model_quester_anster = "text-davinci-003"
@@ -31,7 +31,3 @@ ERROR_VIOLATION_POLICIES = {
     "desc": "违反政策"
 }
 
-api_key_list = [
-    AppKey1,
-    AppKey2
-]

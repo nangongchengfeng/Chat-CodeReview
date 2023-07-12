@@ -36,7 +36,6 @@ def webhook():
         gitlab_message = request.data.decode('utf-8')
         gitlab_message = json.loads(gitlab_message)
         object_kind = gitlab_message.get('object_kind')
-        log.debug(f'操作类型：{object_kind}', f'操作信息：{gitlab_message}')
         verify_token = request.headers.get('X-Gitlab-Token')
         # 项目为commit时，才进行代码检查
         if verify_token == WEBHOOK_VERIFY_TOKEN and object_kind == 'push':
@@ -45,10 +44,12 @@ def webhook():
             project_id = gitlab_message.get('project')['id']
             project_commit_id = gitlab_message.get('commits')
             commit_list = []
+            commit_list_url= []
             for i in project_commit_id:
                 commit_list.append(i['id'])
-                log.info(f'项目id：{project_id}', f'commit_id：{commit_list}')
+                commit_list_url.append(i['url'])
             print(project_id, commit_list)
+            print(commit_list_url)
             for i in commit_list:
                 # 获取commit的变更文件
                 web_url = f"https://gitlab.fujfu.com/api/v4/projects/{project_id}/repository/commits/{i}/diff"

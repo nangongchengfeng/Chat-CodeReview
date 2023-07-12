@@ -98,7 +98,7 @@ class LogHandler(logging.Logger):
         self.__setFileHandler__()
 
 project_name='chat'
-log = LogHandler(project_name, level=INFO)
+log = LogHandler(project_name, level=DEBUG)
 if __name__ == '__main__':
     # log = LogHandler('test')
     log.info('this is a test msg')

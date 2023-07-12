@@ -4,7 +4,7 @@
 # @Email   : 1794748404@qq.com
 # @File    : ai_code_review.py
 # @Software: PyCharm
-#https://xie.infoq.cn/article/f7009354c4875527b30330b92
+# https://xie.infoq.cn/article/f7009354c4875527b30330b92
 import os
 
 import gitlab
@@ -47,8 +47,6 @@ class AICodeReview():
         #     else:
         #         print('变更文件不是代码文件')
 
-
-
         # commits
         # self.commits = self.project.commits.get('db0fc913')
         # print('找到commits')
@@ -71,9 +69,9 @@ class AICodeReview():
 
         print('开始code review')
         for change in self.changes['changes']:
-            print(change['diff'])
+            # print(change['diff'])
             if any(ext in change['new_path'] for ext in ['py', 'java', 'class', 'vue']):
-            # https://platform.openai.com/docs/guides/chat/introduction
+                # https://platform.openai.com/docs/guides/chat/introduction
                 messages = [
                     {"role": "system",
                      "content": "你是是一位资深编程专家，，正在进行 code review，这是一个 commit request，以格式「变更评分：实际的分数」给变更打分，分数区间为0~100分。这个变更的作用是什么? 这部分代码有问题吗? 如果有问题有没有更好的写法?\n\n\n新代码(import from 模块导入新代码不用显示)：\n${newCode} "
@@ -100,4 +98,17 @@ class AICodeReview():
                 exit(1)
                 self.review_notes.append(review_note)
 
+
 if __name__ == '__main__':
+    # 自己测试的
+    # acr = AICodeReview(gitlab_private_token='glpat-L_WSt-s9PC7rJ-foQaB3',project_id='7',merge_request_id='3',openai_api_key='sk-xxxx')
+
+    from config.apollo_config import gitlab_server_url, gitlab_private_token, openai_api_key, cookie
+
+    # 公司的
+    acr = AICodeReview(gitlab_server_url=gitlab_server_url, gitlab_private_token=gitlab_private_token,
+                       project_id='811', merge_request_id='1',
+                       openai_api_key=openai_api_key)
+    os.environ["HTTP_PROXY"] = "http://127.0.0.1:7890"
+    os.environ["HTTPS_PROXY"] = "http://127.0.0.1:7890"
+    acr.ai_code_review()

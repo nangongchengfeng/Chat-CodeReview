@@ -1,4 +1,15 @@
-H:\Gitlab-Code\chat-review\venv\Scripts\python.exe H:\Gitlab-Code\chat-review\reconfig\chat_test.py 
+            messages = [
+                {"role": "system",
+                 "content": "你是是一位资深编程专家，正对gitlab的push的commit进行代码补丁review [代码中：- 表示删除的代码，+ 表示新增的代码 # 表示代码注释]，以格式「变更评分：实际的分数」给变更打分，分数区间为0~100分。输出格式：然后，以精炼的语言、严厉的语气指出存在的问题。如果你觉得必要的情况下，可直接给出修改后的内容。你的反馈内容必须使用严谨的markdown格式。"
+                 },
+                {"role": "user",
+                 "content": f"请review这部分代码变更{change}",
+                 },
+            ]
+
+
+
+H:\Gitlab-Code\chat-review\venv\Scripts\python.exe H:\Gitlab-Code\chat-review\reconfig\chat_test.py
 
 你想要对话的次数是多少呢？
 (请输入数字即可)10
