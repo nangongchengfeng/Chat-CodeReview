@@ -16,6 +16,7 @@ from config.apollo_config import gitlab_server_url, gitlab_private_token, openai
 openai_api_key = openai_api_key
 gitlab_private_token = gitlab_private_token
 Cookie = cookie
+gitlab_server_url=gitlab_server_url
 headers = {
     "PRIVATE-TOKEN": gitlab_private_token,
     "Cookie": Cookie
@@ -27,7 +28,7 @@ def post_comments(id, commit_id, content):
     data = {
         'note': content
     }
-    comments_url = f'https://gitlab.fujfu.com/api/v4/projects/{id}/repository/commits/{commit_id}/comments'
+    comments_url = f'{gitlab_server_url}/api/v4/projects/{id}/repository/commits/{commit_id}/comments'
     response = requests.post(comments_url, headers=headers, json=data)
     log.debug(f"请求结果: {response.json}")
     if response.status_code == 201:
@@ -86,7 +87,7 @@ def chat_review(project_id, project_commit_id, content):
 @retry(stop_max_attempt_number=3, wait_fixed=2000)
 def review_code(project_id, project_commit_id):
     for commit_id in project_commit_id:
-        url = f'https://gitlab.fujfu.com/api/v4/projects/{project_id}/repository/commits/{commit_id}/diff'
+        url = f'{gitlab_server_url}/api/v4/projects/{project_id}/repository/commits/{commit_id}/diff'
         log.info(f"开始请求gitlab的{url}   ,commit: {commit_id}的diff内容")
 
         response = requests.get(url, headers=headers)

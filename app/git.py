@@ -10,6 +10,7 @@ from os import abort
 
 from flask import Blueprint, request, jsonify
 
+from config.apollo_config import gitlab_server_url
 from utils.LogHandler import log
 
 git = Blueprint('git', __name__)
@@ -52,7 +53,7 @@ def webhook():
             print(commit_list_url)
             for i in commit_list:
                 # 获取commit的变更文件
-                web_url = f"https://gitlab.fujfu.com/api/v4/projects/{project_id}/repository/commits/{i}/diff"
+                web_url = f"{gitlab_server_url}/api/v4/projects/{project_id}/repository/commits/{i}/diff"
                 print(web_url)
             return jsonify({'status': 'success'}), 200
 
