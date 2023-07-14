@@ -42,19 +42,32 @@ def webhook():
         if verify_token == WEBHOOK_VERIFY_TOKEN and object_kind == 'push':
             # 验证通过，获取commit的信息
             print(gitlab_message)
+            # 获取项目id
             project_id = gitlab_message.get('project')['id']
+            # 获取所有的commit的id
             project_commit_id = gitlab_message.get('commits')
+            # 获取项目的分支
+            version = gitlab_message.get('project')['default_branch']
+
+            # 定义一个空列表，用来存放commit的id
             commit_list = []
-            commit_list_url= []
+
+            # 定义一个空列表，用来存放commit的url
+            commit_list_url = []
+
+            # 遍历commit的id
             for i in project_commit_id:
                 commit_list.append(i['id'])
                 commit_list_url.append(i['url'])
-            print(project_id, commit_list)
+
+            print(project_id, version, commit_list)
             print(commit_list_url)
+
             for i in commit_list:
                 # 获取commit的变更文件
                 web_url = f"{gitlab_server_url}/api/v4/projects/{project_id}/repository/commits/{i}/diff"
                 print(web_url)
+
             return jsonify({'status': 'success'}), 200
 
         else:
