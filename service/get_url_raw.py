@@ -29,7 +29,7 @@ def get_gitlab_file_content(project_id, file_path, version):
     headers = {
         'PRIVATE-TOKEN': gitlab_private_token  # 替换为你的访问令牌
     }
-
+    file_path = encode_file_path(file_path)
     url = f'{gitlab_server_url}/api/v4/projects/{project_id}/repository/files/{file_path}/raw?ref={version}'
     response = requests.get(url, headers=headers)
 
@@ -46,7 +46,5 @@ if __name__ == '__main__':
     # 调用函数示例
     project_id = 755
     file_path = 'service/src/main/java/com/fujfu/flow/service/impl/HandleMidServiceImpl.java'
-    file_path = encode_file_path(file_path)
     version = "master"
-
     file_content = get_gitlab_file_content(project_id, file_path, version)
