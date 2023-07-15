@@ -3,8 +3,7 @@ import os
 import subprocess
 import tempfile
 
-from reconfig.java_file.get_url_raw import get_gitlab_file_content
-from reconfig.test import encode_file_path
+from service.get_url_raw import get_gitlab_file_content
 from utils.LogHandler import log
 
 import os
@@ -79,6 +78,5 @@ if __name__ == '__main__':
     # 调用函数示例
     project_id = 755
     file_path = 'service/src/main/java/com/fujfu/flow/service/impl/api/FpPlatformServiceImpl.java'
-    file_path = encode_file_path(file_path)
     version = "master"
     process_java_file(project_id, file_path, version)

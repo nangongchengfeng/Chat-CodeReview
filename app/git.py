@@ -47,7 +47,7 @@ def webhook():
             # 获取所有的commit的id
             project_commit_id = gitlab_message.get('commits')
             # 获取项目的分支
-            version = gitlab_message.get('project')['default_branch']
+            version = gitlab_message.get('ref').split('/')[-1]
 
             # 定义一个空列表，用来存放commit的id
             commit_list = []
