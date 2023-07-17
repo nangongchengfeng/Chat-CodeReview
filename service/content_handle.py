@@ -23,10 +23,24 @@ diff_content = """@@ -16,12 +16,12 @@ public class LaborAuthFilter implements Fi
              }
 """
 
-lines = diff_content.split('\n')
-filtered_lines = [line for line in lines if not (line.startswith('+') or line.startswith('-'))]
-filtered_content = '\n'.join(filtered_lines)
-# 使用正则表达式删除行
-filtered_content = re.sub(r'@@.*\n', '', filtered_content)
+import re
 
-print(filtered_content)
+
+# def filter_diff_content(diff_content):
+#     lines = diff_content.split('\n')
+#     filtered_lines = [line for line in lines if not line.startswith('-')]
+#     filtered_content = '\n'.join(filtered_lines)
+#     filtered_content = re.sub(r'@@.*\n', '', filtered_content)
+#     lines = filtered_content.split('\n')
+#     processed_code = '\n'.join([line[1:] if line.startswith('+') else line for line in lines])
+#     return processed_code
+
+
+def filter_diff_content(diff_content):
+    filtered_content = re.sub(r'(^-.*\n)|(^@@.*\n)', '', diff_content, flags=re.MULTILINE)
+    processed_code = '\n'.join([line[1:] if line.startswith('+') else line for line in filtered_content.split('\n')])
+    return processed_code
+
+
+if __name__ == '__main__':
+    print(filter_diff_content(diff_content))
