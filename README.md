@@ -64,7 +64,7 @@ ChatGPT集成Gitlab，实现自动代码审计并进行评论，为软件开发�
 
 
 
-
+## 演示图
 
 ![img.png](images/img.png)
 
