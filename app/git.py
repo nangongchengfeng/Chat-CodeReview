@@ -11,6 +11,7 @@ from os import abort
 from flask import Blueprint, request, jsonify
 
 from config.apollo_config import gitlab_server_url
+from config.config import WEBHOOK_VERIFY_TOKEN
 from utils.LogHandler import log
 
 git = Blueprint('git', __name__)
@@ -26,14 +27,12 @@ def question():
     return 'hello world'
 
 
-# gitlab的webhook的token
-WEBHOOK_VERIFY_TOKEN = "asdhiqbryuwfqodwgeayrgfbsifbd"
-
-
 @git.route('/webhook', methods=['GET', 'POST'])
 def webhook():
     if request.method == 'GET':
         verify_token = request.headers.get('X-Gitlab-Token')
+
+        # gitlab的webhook的token验证
         if verify_token == WEBHOOK_VERIFY_TOKEN:
             return jsonify({'status': 'success'}), 200
         else:
