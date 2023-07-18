@@ -9,10 +9,9 @@ from os import abort
 
 from flask import Blueprint, request, jsonify
 
-from config.apollo_config import gitlab_server_url
 from config.config import WEBHOOK_VERIFY_TOKEN
-from utils.LogHandler import log
 from service.chat_review import review_code
+from utils.LogHandler import log
 
 git = Blueprint('git', __name__)
 """
@@ -92,7 +91,7 @@ def webhook():
             #     # 获取commit的变更文件
             #     web_url = f"{gitlab_server_url}/api/v4/projects/{project_id}/repository/commits/{i}/diff"
             #     print(web_url)
-                # https://gitlab.xxx.com/api/v4/projects/440/repository/commits/df4fa64a43f9b227c90d46a71556b717812635ca/diff
+            # https://gitlab.xxx.com/api/v4/projects/440/repository/commits/df4fa64a43f9b227c90d46a71556b717812635ca/diff
 
             """
             总结：
@@ -109,7 +108,7 @@ def webhook():
             return jsonify({'status': 'success'}), 200
 
         else:
-            print('项目不是push')
+            log.error("项目不是push")
             return jsonify({'status': 'bad token'}), 401
 
     else:
