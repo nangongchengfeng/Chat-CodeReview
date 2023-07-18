@@ -19,7 +19,6 @@ Cookie = cookie
 gitlab_server_url=gitlab_server_url
 headers = {
     "PRIVATE-TOKEN": gitlab_private_token,
-    "Cookie": Cookie
 }
 
 
