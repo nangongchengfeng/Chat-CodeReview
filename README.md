@@ -209,7 +209,9 @@ openai_api_key = openai_api_key
 nohup python3 app.py & 
 ```
 
+### 5、Gitlab配置Webhook
 
+![1689651530556](images/1689651530556.png)
 
 
 
