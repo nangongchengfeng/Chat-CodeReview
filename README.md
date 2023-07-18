@@ -275,23 +275,11 @@ def filter_diff_content(diff_content):
 
 
 
+## 贡献
 
+感谢 [ anc95  小安大佬](https://github.com/anc95) 的支持，以及项目的启发 https://github.com/anc95/ChatGPT-CodeReview.git
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ ![Avatar](images/13167934.jpg) 
 
 
 
