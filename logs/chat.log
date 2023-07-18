@@ -1,2 +1,4 @@
-2023-07-17 10:10:44.977 INFO | [MainThread] chat [21] | apollo_config.py <module> | 加载apollo配置
-2023-07-17 10:10:45.090 INFO | [MainThread] chat [39] | app.py <module> | Starting the app...
+2023-07-18 11:27:05.675 INFO | [MainThread] chat [21] | apollo_config.py <module> | 加载apollo配置
+2023-07-18 11:27:05.747 INFO | [MainThread] chat [43] | app.py <module> | Starting the app...
+2023-07-18 11:27:09.131 INFO | [MainThread] chat [21] | apollo_config.py <module> | 加载apollo配置
+2023-07-18 11:27:09.311 INFO | [MainThread] chat [37] | get_url_raw.py get_gitlab_file_content | https://gitlab.fujfu.com/api/v4/projects/755/repository/files/service%2Fsrc%2Fmain%2Fjava%2Fcom%2Ffujfu%2Fflow%2Fservice%2Fimpl%2FHandleMidServiceImpl.java/raw?ref=master API请求成功：200 OK
