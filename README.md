@@ -248,7 +248,7 @@ def filter_diff_content(diff_content):
 
 
 
-#### 方法3 (复杂)
+#### 方法3 (复杂) 未联调，代码已经覆写完毕
 
 3、把diff 的内容进行处理，取消删除行 和 + 号标志，获取已经修改的原文件，使用JavaParser进行解析。获取到相应的代码块，进行上传review
 
