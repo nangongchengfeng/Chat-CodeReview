@@ -11,6 +11,14 @@ from config.apollo_config import gitlab_server_url, gitlab_private_token
 from service.call_java_json import process_java_file
 from utils.LogHandler import log
 
+"""
+获取Gitlab项目中commit_id的文件，然后调用call_java_json.py中的process_java_file函数处理
+传入参数：
+project_id：项目ID
+version：分支或标签
+commit_id：commit_id
+"""
+
 
 def get_commit_content(project_id, version, commit_id):
     headers = {
@@ -36,8 +44,8 @@ def get_commit_content(project_id, version, commit_id):
     else:
         return []
 
-if __name__ == "__main__":
 
+if __name__ == "__main__":
     # 调用函数示例
     project_id = 798
     version = "dev"

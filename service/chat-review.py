@@ -4,13 +4,19 @@
 # @Email   : 1794748404@qq.com
 # @File    : chat-review.py
 # @Software: PyCharm
-import os
 import openai
 import requests
 from openai import OpenAIError
 from retrying import retry
-from utils.LogHandler import log
+
 from config.apollo_config import gitlab_server_url, gitlab_private_token, openai_api_key, cookie
+from utils.LogHandler import log
+
+"""
+传入project_id和project_commit_id
+ChatGPT代码补丁审查
+"""
+
 
 # 配置openai
 openai_api_key = openai_api_key

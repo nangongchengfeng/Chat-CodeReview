@@ -4,14 +4,21 @@
 # @Email   : 1794748404@qq.com
 # @File    : get_url_raw.py
 # @Software: PyCharm
-import os
-import tempfile
 import urllib.parse
 
 import requests
 
 from config.apollo_config import gitlab_private_token, gitlab_server_url
 from utils.LogHandler import log
+
+"""
+获取Gitlab项目中指定文件的内容
+
+传入参数：
+project_id：项目ID
+file_path：文件路径
+version：分支或标签
+"""
 
 
 def encode_file_path(file_path):

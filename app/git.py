@@ -53,6 +53,12 @@ def webhook():
         object_kind = gitlab_message.get('object_kind')
         # 获取gitlab的webhook的token
         verify_token = request.headers.get('X-Gitlab-Token')
+
+        """
+        项目为commit时，才进行代码检查，目前我只实现了commit的检查，后续可以添加merge和tag的检查
+        
+        涵盖push（commit）、merge（合并请求）和tag（标签创建）等三种代码提交方式
+        """
         # 项目为commit时，才进行代码检查
         if verify_token == WEBHOOK_VERIFY_TOKEN and object_kind == 'push':
             # 验证通过，获取commit的信息
@@ -63,10 +69,8 @@ def webhook():
             project_commit_id = gitlab_message.get('commits')
             # 获取项目的分支
             version = gitlab_message.get('ref').split('/')[-1]
-
             # 定义一个空列表，用来存放commit的id
             commit_list = []
-
             # 定义一个空列表，用来存放commit的url
             commit_list_url = []
 
@@ -76,12 +80,25 @@ def webhook():
                 commit_list_url.append(i['url'])
 
             print(project_id, version, commit_list)
+            # 440 dev ['df4fa64a43f9b227c90d46a71556b717812635ca']
             print(commit_list_url)
+            #['https://gitlab.xxx.com/risk/xxx-risk-xxx/-/commit/df4fa64a43f9b227c90d46a71556b717812635ca']
 
             for i in commit_list:
                 # 获取commit的变更文件
                 web_url = f"{gitlab_server_url}/api/v4/projects/{project_id}/repository/commits/{i}/diff"
                 print(web_url)
+                #https://gitlab.xxx.com/api/v4/projects/440/repository/commits/df4fa64a43f9b227c90d46a71556b717812635ca/diff
+
+            """
+            总结：
+            可用的参数：
+            project_id 项目id
+            version 分支 
+            commit_list commit的id
+            commit_list_url commit的url
+            web_url commit的变更文件 
+            """
 
             return jsonify({'status': 'success'}), 200
 

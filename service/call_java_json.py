@@ -5,9 +5,10 @@ import tempfile
 
 from service.get_url_raw import get_gitlab_file_content
 from utils.LogHandler import log
+"""
+调用Java命令，将Java文件转换为json
 
-import os
-
+"""
 
 def get_jar_file_path():
     """
