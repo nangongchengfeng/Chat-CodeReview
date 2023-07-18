@@ -2,7 +2,7 @@
 # @Time    : 2023/7/10 11:34
 # @Author  : 南宫乘风
 # @Email   : 1794748404@qq.com
-# @File    : chat-review.py
+# @File    : chat_review.py
 # @Software: PyCharm
 import os
 import openai

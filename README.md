@@ -168,7 +168,44 @@ Server: Werkzeug/2.3.6 Python/3.8.0Date: Tue, 18 Jul 2023 03:39:51 GMTContent-Ty
 
 ## 安装运行
 
+### 1、下载代码
 
+```python
+git clone https://github.com/nangongchengfeng/chat-review.git
+```
+
+### 2、安装依赖
+
+![1689663745702](images/1689663745702.png)
+
+```python
+python deal_package.py
+```
+
+### 3、更新配置
+
+**config/config.py**
+
+```python
+
+"""
+这个文件是用来从apollo配置中心获取配置的，
+如果没有apollo配置中心，可以直接在这里配置
+"""
+
+WEBHOOK_VERIFY_TOKEN = "asdhiqbryuwfqodwgeayrgfbsifbd"
+gitlab_server_url = gitlab_server_url
+gitlab_private_token = gitlab_private_token
+openai_api_key = openai_api_key
+
+```
+
+### 4、运行app.py文件
+
+```python
+简单
+nohup python3 app.py & 
+```
 
 
 
@@ -232,11 +269,9 @@ def filter_diff_content(diff_content):
 
 
 
-
-
 ## 演示图
 
-![img.png](images/img.png)
+![1689663598079](images/1689663598079.png)
 
 
 

@@ -2,7 +2,7 @@
 # @Time    : 2023/7/10 11:34
 # @Author  : 南宫乘风
 # @Email   : 1794748404@qq.com
-# @File    : chat-review.py
+# @File    : chat_review.py
 # @Software: PyCharm
 import openai
 import requests
@@ -10,6 +10,7 @@ from openai import OpenAIError
 from retrying import retry
 
 from config.apollo_config import gitlab_server_url, gitlab_private_token, openai_api_key, cookie
+from service.content_handle import filter_diff_content
 from utils.LogHandler import log
 
 """
@@ -17,12 +18,11 @@ from utils.LogHandler import log
 ChatGPT代码补丁审查
 """
 
-
 # 配置openai
 openai_api_key = openai_api_key
 gitlab_private_token = gitlab_private_token
 Cookie = cookie
-gitlab_server_url=gitlab_server_url
+gitlab_server_url = gitlab_server_url
 headers = {
     "PRIVATE-TOKEN": gitlab_private_token,
 }
@@ -50,13 +50,14 @@ def wait_and_retry(exception):
 
 @retry(retry_on_exception=wait_and_retry, stop_max_attempt_number=3, wait_fixed=60000)
 def generate_review_note(change):
+    content = filter_diff_content(change['diff'])
     openai.api_key = openai_api_key
     messages = [
         {"role": "system",
-         "content": "你是是一位资深编程专家，gitlab的commit代码变更将以git diff 字符串的形式提供，注意：代码中：- 表示删除的代码，+ 表示新增的代码 # 表示代码注释，以格式「变更评分：实际的分数」给变更打分，分数区间为0~100分。输出格式：然后，以精炼的语言、严厉的语气指出存在的问题。如果你觉得必要的情况下，可直接给出修改后的内容。你的反馈内容必须使用严谨的markdown格式。"
+         "content": "你是是一位资深编程专家，gitlab的commit代码变更将以git diff 字符串的形式提供，以格式「变更评分：实际的分数」给变更打分，分数区间为0~100分。输出格式：然后，以精炼的语言、严厉的语气指出存在的问题。如果你觉得必要的情况下，可直接给出修改后的内容。你的反馈内容必须使用严谨的markdown格式。"
          },
         {"role": "user",
-         "content": f"请review这部分代码变更{change['diff']}",
+         "content": f"请review这部分代码变更{content}",
          },
     ]
     response = openai.ChatCompletion.create(
@@ -78,6 +79,7 @@ def chat_review(project_id, project_commit_id, content):
     log.info('开始code review')
     for change in content:
         log.info(f"单项目的commit内容： {change}")
+        # 判断文件类型，只对py、java、class、vue文件进行review
         if any(ext in change['new_path'] for ext in ['py', 'java', 'class', 'vue']):
             try:
                 review_note = generate_review_note(change)
@@ -107,8 +109,8 @@ def review_code(project_id, project_commit_id):
 
 
 if __name__ == '__main__':
-    project_id = 190
-    project_commit_id = ['4061a323123a7a89e8121e1a70d8c1850c546a48']
+    project_id = 787
+    project_commit_id = ['ac98654c27a669bf88ce6d261d371a259c19dfcc']
     # os.environ["HTTP_PROXY"] = "http://192.168.96.19:7890"
     # os.environ["HTTPS_PROXY"] = "http://192.168.96.19:7890"
     log.info(f"项目id: {project_id}，commit_id: {project_commit_id} 开始进行ChatGPT代码补丁审查")

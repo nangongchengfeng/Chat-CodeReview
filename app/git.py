@@ -11,6 +11,8 @@ from flask import Blueprint, request, jsonify
 
 from config.apollo_config import gitlab_server_url
 from config.config import WEBHOOK_VERIFY_TOKEN
+from utils.LogHandler import log
+from service.chat_review import review_code
 
 git = Blueprint('git', __name__)
 """
@@ -79,26 +81,30 @@ def webhook():
                 commit_list.append(i['id'])
                 commit_list_url.append(i['url'])
 
-            print(project_id, version, commit_list)
+            # print(project_id, version, commit_list)
+            log.info(f"项目id: {project_id}，分支: {version}，commit_id: {commit_list} ")
             # 440 dev ['df4fa64a43f9b227c90d46a71556b717812635ca']
-            print(commit_list_url)
-            #['https://gitlab.xxx.com/risk/xxx-risk-xxx/-/commit/df4fa64a43f9b227c90d46a71556b717812635ca']
-
-            for i in commit_list:
-                # 获取commit的变更文件
-                web_url = f"{gitlab_server_url}/api/v4/projects/{project_id}/repository/commits/{i}/diff"
-                print(web_url)
-                #https://gitlab.xxx.com/api/v4/projects/440/repository/commits/df4fa64a43f9b227c90d46a71556b717812635ca/diff
+            log.info(f"项目id: {project_id}，commit_url: {commit_list_url}")
+            # print(commit_list_url)
+            # ['https://gitlab.xxx.com/risk/xxx-risk-xxx/-/commit/df4fa64a43f9b227c90d46a71556b717812635ca']
+            #
+            # for i in commit_list:
+            #     # 获取commit的变更文件
+            #     web_url = f"{gitlab_server_url}/api/v4/projects/{project_id}/repository/commits/{i}/diff"
+            #     print(web_url)
+                # https://gitlab.xxx.com/api/v4/projects/440/repository/commits/df4fa64a43f9b227c90d46a71556b717812635ca/diff
 
             """
             总结：
             可用的参数：
-            project_id 项目id
+            project_id 项目id   必须
             version 分支 
-            commit_list commit的id
+            commit_list commit的id   必须
             commit_list_url commit的url
             web_url commit的变更文件 
             """
+            log.info(f"项目id: {project_id}，commit_id: {project_commit_id} 开始进行ChatGPT代码补丁审查")
+            review_code(project_id, project_commit_id)
 
             return jsonify({'status': 'success'}), 200
 
