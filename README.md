@@ -211,6 +211,14 @@ nohup python3 app.py &
 
 ### 5、Gitlab配置Webhook
 
+```python
+http://192.168.96.19:5000/git/webhook 
+地址运行的机器ip变更，域名也可以
+http://gitlab.ownit.top/git/webhook 
+```
+
+
+
 ![1689651530556](images/1689651530556.png)
 
 
