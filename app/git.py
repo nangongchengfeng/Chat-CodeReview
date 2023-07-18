@@ -14,6 +14,11 @@ from config.apollo_config import gitlab_server_url
 from utils.LogHandler import log
 
 git = Blueprint('git', __name__)
+"""
+git的蓝图
+
+主要功能：获取gitlab的webhook，进行代码检查
+"""
 
 
 @git.route('/api')
@@ -21,6 +26,7 @@ def question():
     return 'hello world'
 
 
+# gitlab的webhook的token
 WEBHOOK_VERIFY_TOKEN = "asdhiqbryuwfqodwgeayrgfbsifbd"
 
 

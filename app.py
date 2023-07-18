@@ -4,7 +4,9 @@
 # @Email   : 1794748404@qq.com
 # @File    : app.py.py
 # @Software: PyCharm
-
+"""
+    项目启动文件
+"""
 
 import os
 
@@ -16,6 +18,8 @@ from utils.LogHandler import log
 
 app = Flask(__name__)
 app.config['debug'] = True
+
+# 蓝图注册
 app.register_blueprint(chat, url_prefix='/chat')
 app.register_blueprint(git, url_prefix='/git')
 

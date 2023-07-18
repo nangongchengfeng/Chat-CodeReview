@@ -20,4 +20,4 @@ def input_package():
 
 
 if __name__ == '__main__':
-    input_package()
+    export_package()

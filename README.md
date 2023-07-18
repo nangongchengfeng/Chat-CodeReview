@@ -52,9 +52,15 @@ ChatGPT集成Gitlab，实现自动代码审计并进行评论，为软件开发�
 }
 ```
 
+## 环境变量
+
+-  gitlab_server_url :  Gitlab服务器的URL地址 
+-  gitlab_private_token :  用于访问Gitlab API的私有访问令牌（private token） 
+-  openai_api_key :  用于访问OpenAI的API的密钥 
 
 
 
+## 安装运行
 
 
 
