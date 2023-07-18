@@ -3,8 +3,8 @@ import os
 import subprocess
 import tempfile
 
-from reconfig.java_file.get_url_raw import get_gitlab_file_content
-from reconfig.test import encode_file_path
+from temporary_files.java_file.get_url_raw import get_gitlab_file_content
+from temporary_files.test import encode_file_path
 
 
 def execute_java_command(file_path):

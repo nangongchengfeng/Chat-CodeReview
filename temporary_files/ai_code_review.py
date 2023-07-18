@@ -4,7 +4,6 @@
 # @Email   : 1794748404@qq.com
 # @File    : ai_code_review.py
 # @Software: PyCharm
-# https://xie.infoq.cn/article/f7009354c4875527b30330b92
 import os
 
 import gitlab
