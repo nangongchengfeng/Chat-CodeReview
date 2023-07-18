@@ -5,14 +5,12 @@
 # @File    : git.py
 # @Software: PyCharm
 import json
-import subprocess
 from os import abort
 
 from flask import Blueprint, request, jsonify
 
 from config.apollo_config import gitlab_server_url
 from config.config import WEBHOOK_VERIFY_TOKEN
-from utils.LogHandler import log
 
 git = Blueprint('git', __name__)
 """
@@ -29,7 +27,12 @@ def question():
 
 @git.route('/webhook', methods=['GET', 'POST'])
 def webhook():
+    """
+    gitlab的webhook,用来接受gitlab的推送
+    http://192.168.96.19:5000/git/webhook
+    """
     if request.method == 'GET':
+        # 获取gitlab的webhook的token
         verify_token = request.headers.get('X-Gitlab-Token')
 
         # gitlab的webhook的token验证
@@ -39,9 +42,16 @@ def webhook():
             return jsonify({'status': 'bad token'}), 401
 
     elif request.method == 'POST':
+        """
+        webhook的主要逻辑,获取gitlab的推送信息
+        """
+        # 获取gitlab的推送信息
         gitlab_message = request.data.decode('utf-8')
+        # 将gitlab的推送信息转换为字典
         gitlab_message = json.loads(gitlab_message)
+        # 获取项目的类型
         object_kind = gitlab_message.get('object_kind')
+        # 获取gitlab的webhook的token
         verify_token = request.headers.get('X-Gitlab-Token')
         # 项目为commit时，才进行代码检查
         if verify_token == WEBHOOK_VERIFY_TOKEN and object_kind == 'push':
