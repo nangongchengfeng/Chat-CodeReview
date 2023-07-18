@@ -54,9 +54,9 @@
 
 ## 环境变量
 
--  gitlab_server_url :  Gitlab服务器的URL地址 
--  gitlab_private_token :  用于访问Gitlab API的私有访问令牌（private token） 
--  openai_api_key :  用于访问OpenAI的API的密钥 
+> -  gitlab_server_url :  Gitlab服务器的URL地址 
+> -  gitlab_private_token :  用于访问Gitlab API的私有访问令牌（private token） 
+> -  openai_api_key :  用于访问OpenAI的API的密钥 
 
 
 
@@ -171,6 +171,64 @@ Server: Werkzeug/2.3.6 Python/3.8.0Date: Tue, 18 Jul 2023 03:39:51 GMTContent-Ty
 
 
 
+
+
+
+## 疑难杂症
+
+### diff处理
+
+![1689661104194](images/1689661104194.png)
+
+#### 方法1 (简洁)
+
+1、把获取diff的内容全部传给chatgpt进行处理，（包含添加行，删除行）
+
+优势：方便，快速
+
+缺点：如果内容过长，导致ChatGPT处理失败，只是部分代码，逻辑不通顺
+
+
+
+#### 方法2 (推荐)
+
+2、把获取diff的内容进行处理，取消删除行 和 + 号标志
+
+优势：方便，快速，节约一定长度
+
+缺点：如果内容过长，导致ChatGPT处理失败，只是部分代码，逻辑不通顺
+
+```python
+def filter_diff_content(diff_content):
+    filtered_content = re.sub(r'(^-.*\n)|(^@@.*\n)', '', diff_content, flags=re.MULTILINE)
+    processed_code = '\n'.join([line[1:] if line.startswith('+') else line for line in filtered_content.split('\n')])
+    return processed_code
+```
+
+![1689661743140](images/1689661743140.png)
+
+
+
+#### 方法3 (复杂)
+
+3、把diff 的内容进行处理，取消删除行 和 + 号标志，获取已经修改的原文件，使用JavaParser进行解析。获取到相应的代码块，进行上传review
+
+优势：节约长度，方法完成，逻辑稍微通顺
+
+缺点：十分的麻烦，繁琐，仅支持Java
+
+```json
+[{
+	'code': 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+	'name': 'SettlementDetailController'
+}, {
+	'code': 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+	'name': 'queryRecord'
+}, {
+	'code': 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
+	'name': 'populateBatchItemVO'
+}]
+```
 
 
 
