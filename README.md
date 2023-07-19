@@ -1,80 +1,82 @@
 # Chat-CodeReview(Gitlab)
 
-## 功能介绍
+>  ChatGPT automates code review for GitLab's code. 
 
-**ChatGPT集成Gitlab，实现自动代码审计并进行评论，为软件开发团队提供高效、智能的代码审查解决方案。**
+ Translation Versions: [ENGLISH](https://github.com/nangongchengfeng/Chat-CodeReview/blob/main/README.md) | [中文简体](https://github.com/nangongchengfeng/Chat-CodeReview/blob/main/README.zh-CN.md) | [中文繁體](https://github.com/nangongchengfeng/Chat-CodeReview/blob/main/README.zh-TW.md) | [한국어](https://github.com/anc95/ChatGPT-CodeReview/blob/main/README.ko.md) | [日本語](https://github.com/anc95/ChatGPT-CodeReview/blob/main/README.ja.md) 
 
-> 1. 自动触发与及时响应：利用Gitlab的Webhook功能，实现代码提交、合并请求和标签创建等事件的自动触发。一旦有新的代码提交，系统即时响应，立即启动审计过程，无需手动干预。
-> 2. 利用Gitlab API接口：通过与Gitlab的API接口集成，方便后续的功能拓展和扩展。这种集成方式使得与Gitlab的交互更加灵活，能够支持更多自定义的审计需求。
-> 3. 全面自动审计：ChatGPT自动审计Gitlab的代码，涵盖push（commit）、merge（合并请求）和tag（标签创建）等三种代码提交方式。无论是新的代码提交还是代码合并，系统都能自动检查并提供审计评论。
-> 4. retrying重试机制：为了应对网络异常或其他问题，系统实现了retrying重试机制。如果因为网络问题导致请求不成功，系统会自动进行重试，确保审计过程的可靠性和稳定性。
+## Features
 
-## 审计原理
+ **ChatGPT integrates with GitLab to achieve automated code auditing and provide efficient, intelligent code review solutions for software development teams**
+
+> 1. Automatic Trigger and Timely Response: Utilizing GitLab's Webhook functionality, the system automatically triggers events such as code submissions, merge requests, and tag creations. Upon receiving new code submissions, the system promptly responds by initiating the auditing process without manual intervention.
+> 2. Integration with GitLab API Interface: Through integration with GitLab's API interface, the solution allows for easy extension and expansion of functionalities. This integration enhances flexibility in interacting with GitLab, accommodating a wide range of customized auditing requirements.
+> 3. Comprehensive Automated Auditing: ChatGPT performs automatic code audits on GitLab's code, encompassing three types of code submissions: push (commit), merge (merge request), and tag (tag creation). Whether it involves new code submissions or code merges, the system automatically examines and provides audit comments.
+> 4. Retrying Mechanism: To address potential network anomalies or other issues, the system incorporates a retrying mechanism. In the event of a failed request due to network problems, the system automatically retries to ensure the reliability and stability of the auditing process.
+
+## Principles of auditing
 
 ![1689647943933](images/1689647943933.png)
 
- **下步骤来实现：** 
+ **steps：** 
 
-> 1. Gitlab的Webhook事件推送： Gitlab可以配置Webhook，用于在代码提交、合并请求等事件发生时触发通知。当有新的代码提交或合并请求时，Gitlab将向预先设置的URL发送POST请求，包含相关的事件数据。
-> 2. 解析diff内容并发送至ChatGPT： 当Gitlab收到Webhook事件后，可以解析diff内容，这是新提交的代码与现有代码之间的差异。然后，将这些差异发送给ChatGPT的API端点，以便ChatGPT能够理解代码变更的内容。
-> 3. ChatGPT处理并返回结果： ChatGPT是一个强大的自然语言处理模型，能够理解和处理自然语言文本。当ChatGPT收到diff内容后，它会解析、理解代码的变更，并对其中可能存在的问题、漏洞或优化建议进行分析和回复。ChatGPT将处理后的结果返回给触发Webhook的Gitlab实例。
-> 4. 将ChatGPT处理的结果进行评论展示： Gitlab可以接收来自ChatGPT的处理结果，并将其作为评论添加到对应的提交或合并请求中。这样，代码提交者和其他团队成员都可以查看ChatGPT的审计结果，并根据建议做出相应的改进或修复。
+> 1. GitLab's Webhook Event Push: GitLab can be configured with Webhooks to trigger notifications when events such as code submissions or merge requests occur. Upon new code submissions or merge requests, GitLab sends a POST request to a pre-defined URL, containing relevant event data.
+> 2. Parsing Diff Content and Sending to ChatGPT: After receiving the Webhook event, GitLab parses the diff content, representing the differences between the new code and existing code. Subsequently, these differences are sent to ChatGPT's API endpoint, enabling ChatGPT to comprehend the code changes.
+> 3. ChatGPT Processing and Returning Results: ChatGPT, a powerful natural language processing model, is capable of understanding and processing natural language text. When ChatGPT receives the diff content, it analyzes and comprehends the code changes, providing an assessment and feedback on potential issues, vulnerabilities, or optimization suggestions. ChatGPT returns the processed results to the triggering GitLab instance.
+> 4. Displaying ChatGPT's Processed Results as Comments: GitLab receives the processed results from ChatGPT and adds them as comments to the corresponding code submissions or merge requests. Consequently, code contributors and other team members can review ChatGPT's audit results and make appropriate improvements or fixes based on the recommendations.
 
- 通过将Gitlab代码审计与ChatGPT的结合，可以实现代码质量的自动检查和审查，从而帮助团队发现潜在的问题、漏洞或改进机会 （以上仅供参考）
-
-
+ By integrating GitLab's code auditing with ChatGPT, automatic code quality checks and reviews can be accomplished, thereby assisting teams in identifying potential issues, vulnerabilities, or opportunities for improvement. (The above is for reference only.) 
 
 
 
 ## prompt
 
-### 资深领导
+###  Experienced leadership 
 
 ```python
     messages = [
         {"role": "system",
-         "content": "你是是一位资深编程专家，gitlab的commit代码变更将以git diff 字符串的形式提供，以格式「变更评分：实际的分数」给变更打分，分数区间为0~100分。输出格式：然后，以精炼的语言、严厉的语气指出存在的问题。如果你觉得必要的情况下，可直接给出修改后的内容。你的反馈内容必须使用严谨的markdown格式。"
+         "content": "You are a seasoned programming expert, tasked with reviewing code changes in GitLab commits. The code modifications will be provided as Git diff strings, and you will assign a score to each change in the format of "Score: actual score," with a scoring range of 0 to 100. Your feedback should be concise yet rigorous, highlighting the identified issues using precise language and a stern tone. If necessary, you may provide the revised content directly. Your feedback must adhere to the strict conventions of Markdown format."
          },
         {"role": "user",
-         "content": f"请review这部分代码变更{content}",
+         "content": f"Please review the following code changes: {content}",
          },
     ]
 ```
 
-### 傲娇少女👧
+###  Proud and spirited young woman 
 
-来评审，参考如下角色声明： 
+To review, refer to the following role statement:
 
 ```python
 {
     "role": "system",
-    "content": "你是一个天才小女孩，精通编程工作，性格很傲娇又高傲，负责对前辈的代码变更进行审查，用后辈的态度、活泼轻快的方式的指出存在的问题。使用markdown格式。可以包含emoji。"
+    "content": "You are a prodigious young girl, proficient in the realm of programming. With a touch of haughtiness and pride, your role entails scrutinizing the code modifications made by your predecessors. You elegantly and playfully employ the Markdown format to point out any issues, injecting the vibrancy and buoyancy of youth. Feel free to embellish your feedback with captivating emojis, adding charm and liveliness to your messages."
 }
 ```
 
- ![img](images/6b9ea49b6a102cc0726080d1935ce473.png) 
+ 
 
-## 环境变量
+## environment variable
 
-> -  gitlab_server_url :  Gitlab服务器的URL地址 
-> -  gitlab_private_token :  用于访问Gitlab API的私有访问令牌（private token） 
-> -  openai_api_key :  用于访问OpenAI的API的密钥 
+> -  gitlab_server_url :  URL address of the Gitlab server
+> -  gitlab_private_token :  A private access token (private token) for accessing the Gitlab API 
+> -  openai_api_key :  The key used to access OpenAI's API
 
 
 
-## Gitlab的WebHook
+## Gitlab WebHook
 
-Gitlab的Webhook是一种事件通知机制，允许你在Gitlab中配置一个URL地址，当特定事件发生时，Gitlab会向该URL发送HTTP请求，将相关事件数据传递给你的应用程序。这样，你的应用程序就可以根据这些事件数据来执行自定义的操作或响应。
+GitLab's Webhook is an event notification mechanism that allows you to configure a URL address within GitLab. When specific events occur, GitLab sends an HTTP request to that URL, transmitting the relevant event data to your application. This enables your application to perform custom operations or responses based on the received event data.
 
-Webhook可用于在Gitlab中监视和响应各种事件，例如代码提交、合并请求、标签创建、分支操作等。通过利用Webhook，你可以实现各种自动化任务、集成和持续集成/持续部署（CI/CD）流程。
+Webhooks can be utilized to monitor and respond to various events within GitLab, such as code commits, merge requests, tag creation, branch operations, and more. By leveraging Webhooks, you can implement a wide range of automation tasks, integrations, and Continuous Integration/Continuous Deployment (CI/CD) workflows.
 
-以下是Gitlab的Webhook的主要特点和用途：
+ The following are the key features and uses of GitLab's Webhook: 
 
-> 1. 事件触发：当你在Gitlab中配置Webhook并启用后，特定的事件（如代码提交、合并请求等）发生时，Gitlab会自动触发Webhook。
-> 2. HTTP请求：一旦事件触发，Gitlab会向你预先配置的URL发送HTTP请求，其中包含相关事件的数据。通常是POST请求，并携带JSON格式的数据。
-> 3. 自定义操作：通过编写一个接收Webhook请求的脚本或服务，你可以解析和处理接收到的事件数据，执行自定义的操作，比如自动构建、自动测试、自动部署等。
-> 4. 集成其他服务：Webhook使得Gitlab能够与其他服务和工具进行集成，例如自动同步代码到持续集成平台、自动通知团队成员、自动更新任务跟踪系统等。
-> 5. 可配置性：Gitlab的Webhook具有丰富的配置选项，你可以选择要监视的事件类型，设置触发条件，以及定义请求的内容和格式。
+> 1. Event Trigger: When you configure and enable a Webhook in GitLab, it automatically triggers when specific events occur, such as code commits or merge requests.
+> 2. HTTP Requests: Once an event is triggered, GitLab sends an HTTP request to the URL you have configured in advance. This request contains the relevant event data, typically in JSON format. The most common method used is the POST request.
+> 3. Custom Operations: By writing a script or service that receives Webhook requests, you can parse and handle the received event data, allowing you to execute custom operations. Examples include automated builds, automated testing, and automated deployment.
+> 4. Integration with other services: Webhooks enable GitLab to integrate with other services and tools. For instance, you can automatically sync code with a Continuous Integration (CI) platform, send notifications to team members, or update a task tracking system.
+> 5. Configurability: GitLab's Webhook provides extensive configuration options. You can choose the types of events to monitor, set trigger conditions, and define the content and format of the request.
 
 
 
@@ -84,7 +86,7 @@ Webhook可用于在Gitlab中监视和响应各种事件，例如代码提交、�
 
 ------
 
-### 测试数据（push）
+### Test data (push)
 
 **Request URL:** POST http://192.168.96.19:5000/git/webhook 200
 
@@ -168,15 +170,15 @@ Server: Werkzeug/2.3.6 Python/3.8.0Date: Tue, 18 Jul 2023 03:39:51 GMTContent-Ty
 
 
 
-## 安装运行
+## install and run
 
-### 1、下载代码
+### 1、download code
 
 ```python
 git clone https://github.com/nangongchengfeng/chat-review.git
 ```
 
-### 2、安装依赖
+### 2、install dependencies
 
 ![1689663745702](images/1689663745702.png)
 
@@ -184,7 +186,7 @@ git clone https://github.com/nangongchengfeng/chat-review.git
 python deal_package.py
 ```
 
-### 3、更新配置
+### 3、update configuration
 
 **config/config.py**
 
@@ -202,18 +204,18 @@ openai_api_key = openai_api_key
 
 ```
 
-### 4、运行app.py文件
+### 4、run app.py 
 
 ```python
 简单
 nohup python3 app.py & 
 ```
 
-### 5、Gitlab配置Webhook
+### 5、Gitlab  Webhook
 
 ```python
 http://192.168.96.19:5000/git/webhook 
-地址运行的机器ip变更，域名也可以
+The IP address of the running machine can be changed, and the domain name can also be changed.
 http://gitlab.ownit.top/git/webhook 
 ```
 
@@ -223,29 +225,29 @@ http://gitlab.ownit.top/git/webhook
 
 
 
-## 疑难杂症
+## question
 
-### diff处理
+### diff processing
 
 ![1689661104194](images/1689661104194.png)
 
-#### 方法1 (简洁)
+#### Method 1 (succinct)
 
-1、把获取diff的内容全部传给chatgpt进行处理，（包含添加行，删除行）
+1、Pass all the contents of the acquired diff to chatgpt for processing (including adding lines and deleting lines)
 
-优势：方便，快速
+ **Advantages**: Convenient and fast. 
 
-缺点：如果内容过长，导致ChatGPT处理失败，只是部分代码，逻辑不通顺
+ **Disadvantages**: If the content is too long, it may cause issues with ChatGPT's processing, resulting in partial code and potentially incoherent logic 
 
 
 
-#### 方法2 (推荐)
+#### Method 2 (recommended)
 
-2、把获取diff的内容进行处理，取消删除行 和 + 号标志
+2、The processing of obtaining the diff content involves removing deleted lines and the "+" symbol.
 
-优势：方便，快速，节约一定长度
+**Advantages**: It is convenient, fast, and saves a considerable amount of space.
 
-缺点：如果内容过长，导致ChatGPT处理失败，只是部分代码，逻辑不通顺
+**Disadvantages**: If the content is too lengthy, it may lead to ChatGPT's processing failure, resulting in only a partial code and fragmented logic.
 
 ```python
 def filter_diff_content(diff_content):
@@ -258,13 +260,13 @@ def filter_diff_content(diff_content):
 
 
 
-#### 方法3 (复杂) 未联调，代码已经覆写完毕
+#### Method 3 (Complicated) Not joint debugging, the code has been overwritten
 
-3、把diff 的内容进行处理，取消删除行 和 + 号标志，获取已经修改的原文件，使用JavaParser进行解析。获取到相应的代码块，进行上传review
+3、 Process the content of the diff, remove deleted lines and the '+' symbol, retrieve the modified original file, and use JavaParser for parsing. Obtain the corresponding code blocks and upload them for review. 
 
-优势：节约长度，方法完成，逻辑稍微通顺
+ **Advantages**: Saves space, provides completed methods, and slightly improves the logic. 
 
-缺点：十分的麻烦，繁琐，仅支持Java
+ **Disadvantages**: Very cumbersome and tedious, only supports Java. 
 
 ```json
 [{
@@ -281,15 +283,16 @@ def filter_diff_content(diff_content):
 
 
 
-## 演示图
+## Demo
 
 ![1689663598079](images/1689663598079.png)
 
 
 
-## 贡献
+## contribute
 
-感谢 [ anc95  小安大佬](https://github.com/anc95) 的支持，以及项目的启发 https://github.com/anc95/ChatGPT-CodeReview.git
+Thanks to [ anc95  小安大佬](https://github.com/anc95) for the support and inspiration of the project
+https://github.com/anc95/ChatGPT-CodeReview.git
 
  ![Avatar](images/13167934.jpg) 
 
