@@ -2,7 +2,7 @@
 
 >   ChatGPT 自動對 GitLab 的程式碼進行程式碼審查
 
- 翻譯版本:   [ENGLISH](https://github.com/nangongchengfeng/Chat-CodeReview/blob/main/README.md) | [中文简体](https://github.com/nangongchengfeng/Chat-CodeReview/blob/main/README.zh-CN.md) | [中文繁體](https://github.com/nangongchengfeng/Chat-CodeReview/blob/main/README.zh-TW.md) | [한국어](https://github.com/anc95/ChatGPT-CodeReview/blob/main/README.ko.md) | [日本語](https://github.com/anc95/ChatGPT-CodeReview/blob/main/README.ja.md) 
+ 翻譯版本:   [ENGLISH](https://github.com/nangongchengfeng/Chat-CodeReview/blob/main/README.md) | [中文简体](https://github.com/nangongchengfeng/Chat-CodeReview/blob/main/README.zh-CN.md) | [中文繁體](https://github.com/nangongchengfeng/Chat-CodeReview/blob/main/README.zh-TW.md) | [한국어](https://github.com/nangongchengfeng/Chat-CodeReview/blob/main/README.ko.md) | [日本語](https://github.com/nangongchengfeng/Chat-CodeReview/blob/main/README.ja.md) 
 
 ## 功能介紹 
 
