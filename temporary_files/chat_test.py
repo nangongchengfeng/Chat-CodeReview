@@ -78,6 +78,10 @@ def main():
 
 
 if __name__ == "__main__":
-    os.environ["HTTP_PROXY"] = "http://127.0.0.1:7890"
-    os.environ["HTTPS_PROXY"] = "http://127.0.0.1:7890"
-    main()
+    # os.environ["HTTP_PROXY"] = "http://127.0.0.1:7890"
+    # os.environ["HTTPS_PROXY"] = "http://127.0.0.1:7890"
+    # main()
+    import platform
+
+    sys_platform = platform.platform().lower()
+    print(sys_platform)

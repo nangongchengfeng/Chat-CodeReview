@@ -102,8 +102,8 @@ def webhook():
             commit_list_url commit的url
             web_url commit的变更文件 
             """
-            log.info(f"项目id: {project_id}，commit_id: {project_commit_id} 开始进行ChatGPT代码补丁审查")
-            review_code(project_id, project_commit_id)
+            log.info(f"项目id: {project_id}，commit_id: {commit_list} 开始进行ChatGPT代码补丁审查")
+            review_code(project_id, commit_list)
 
             return jsonify({'status': 'success'}), 200
 
