@@ -9,7 +9,7 @@ import requests
 from openai import OpenAIError
 from retrying import retry
 
-from config.apollo_config import gitlab_server_url, gitlab_private_token, openai_api_key, cookie
+from config.config import gitlab_server_url, gitlab_private_token, openai_api_key
 from service.content_handle import filter_diff_content
 from utils.LogHandler import log
 
@@ -21,7 +21,6 @@ ChatGPT代码补丁审查
 # 配置openai
 openai_api_key = openai_api_key
 gitlab_private_token = gitlab_private_token
-Cookie = cookie
 gitlab_server_url = gitlab_server_url
 headers = {
     "PRIVATE-TOKEN": gitlab_private_token,
