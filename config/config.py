@@ -6,7 +6,12 @@
 # @Software: PyCharm
 import platform
 
-from config.apollo_config import gitlab_server_url, gitlab_private_token, openai_api_key
+
+"""
+这个文件是用来从apollo配置中心获取配置的，
+如果没有apollo配置中心，需要删掉这一块
+"""
+#from config.apollo_config import gitlab_server_url, gitlab_private_token, openai_api_key
 
 
 # openai-chatgpt 相关配置
