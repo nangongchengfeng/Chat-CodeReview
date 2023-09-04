@@ -47,3 +47,5 @@ WEBHOOK_VERIFY_TOKEN = "asdhiqbryuwfqodwgeayrgfbsifbd"
 gitlab_server_url = gitlab_server_url
 gitlab_private_token = gitlab_private_token
 openai_api_key = openai_api_key
+openai_baseurl = "https://api.openai.com/v1"
+openai_model_name = "gpt-3.5-turbo"
