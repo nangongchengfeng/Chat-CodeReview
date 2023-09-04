@@ -9,7 +9,7 @@ import requests
 from openai import OpenAIError
 from retrying import retry
 
-from config.config import gitlab_server_url, gitlab_private_token, openai_api_key
+from config.config import gitlab_server_url, gitlab_private_token, openai_api_key, openai_baseurl, openai_model_name
 from service.content_handle import filter_diff_content
 from utils.LogHandler import log
 
@@ -51,6 +51,7 @@ def wait_and_retry(exception):
 def generate_review_note(change):
     content = filter_diff_content(change['diff'])
     openai.api_key = openai_api_key
+    openai.api_base = openai_baseurl
     messages = [
         {"role": "system",
          "content": "你是是一位资深编程专家，gitlab的commit代码变更将以git diff 字符串的形式提供，以格式「变更评分：实际的分数」给变更打分，分数区间为0~100分。输出格式：然后，以精炼的语言、严厉的语气指出存在的问题。如果你觉得必要的情况下，可直接给出修改后的内容。你的反馈内容必须使用严谨的markdown格式。"
@@ -60,7 +61,7 @@ def generate_review_note(change):
          },
     ]
     response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
+        model=openai_model_name,
         messages=messages,
     )
     new_path = change['new_path']
